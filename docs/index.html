@@ -153,10 +153,10 @@
             top: 50%;
             left: 0;
             transform: translateY(-50%);
-            width: 4px;
-            height: 100px;
+            width: 6px;
+            height: 80px;
             background: #00f2fe;
-            box-shadow: 0 0 20px #00f2fe;
+            box-shadow: 0 0 25px #00f2fe, 0 0 50px #00f2fe;
             border-radius: 0 4px 4px 0;
             z-index: 20;
         }
@@ -201,20 +201,18 @@
         
         /* ==================== NAVIGATION ==================== */
         .nav {
-            position: fixed;
+            position: absolute; /* Changed from fixed to absolute to avoid overlap issues if content pushes up */
             top: 0;
             left: 0;
             right: 0;
             z-index: 100;
             padding: 40px 60px;
-            display: grid;
-            grid-template-columns: auto auto 1fr auto;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 40px;
-            transition: all 0.3s ease;
         }
 
-        .nav-left-group {
+        .nav-left {
             display: flex;
             align-items: center;
             gap: 30px;
@@ -257,43 +255,46 @@
             background: rgba(255, 255, 255, 0.1);
         }
         
-        .nav-links {
+        .nav-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: center;
-            gap: 50px;
+            gap: 40px;
         }
         
-        .nav-links a {
+        .nav-link {
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
             transition: color 0.2s;
         }
         
-        .nav-links a:hover {
+        .nav-link:hover {
             color: var(--primary-light);
             text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
         }
         
-        .nav-btn {
-            padding: 12px 36px;
+        .nav-right .sign-in-btn {
+            padding: 12px 32px;
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 12px;
             color: white;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
+            display: inline-block;
         }
         
-        .nav-btn:hover {
+        .nav-right .sign-in-btn:hover {
             background: white;
             color: black;
             border-color: white;
@@ -323,10 +324,10 @@
         
         .hero-title {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(64px, 12vw, 160px);
-            line-height: 0.9;
-            letter-spacing: 2px;
-            margin-bottom: 0;
+            font-size: clamp(64px, 12vw, 140px);
+            line-height: 0.85;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             animation: hero-title 1s ease-out 2.5s both;
         }
@@ -371,22 +372,23 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 24px 48px;
+            padding: 20px 40px;
             background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             color: #fff;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 40px rgba(0, 242, 254, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.2);
-            min-width: 260px;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.3);
+            min-width: 240px;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
         
         .hero-cta::before {
@@ -410,38 +412,33 @@
             box-shadow: 0 0 80px rgba(6, 182, 212, 0.7);
         }
         
-        /* Download Buttons */
         .download-buttons {
             position: absolute;
-            bottom: 48px;
-            right: 48px;
+            bottom: 60px;
+            right: 60px;
             z-index: 10;
             display: flex;
-            gap: 16px;
+            gap: 20px;
             animation: download-fade 0.8s ease-out 3.2s both;
-        }
-        
-        @keyframes download-fade {
-            0% { transform: translateY(30px); filter: blur(10px); }
-            100% { transform: translateY(0); filter: blur(0); }
         }
         
         .store-btn {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 24px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
+            padding: 10px 20px;
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
             color: white;
             text-decoration: none;
             transition: all 0.3s;
+            min-width: 160px;
         }
         
         .store-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: #111;
+            border-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
         }
         
@@ -923,24 +920,24 @@
     
     <!-- Navigation -->
     <nav class="nav" id="nav">
-        <div class="nav-left-group">
+        <div class="nav-left">
             <a href="#" class="nav-logo">
                 <iconify-icon icon="ph:star-four-fill" class="nav-logo-icon"></iconify-icon>
-                <div class="nav-logo-text">TACTICS<br>MASTER</div>
+                <div class="nav-logo-text">FROZE<br>VERSE</div>
             </a>
             <a href="#" class="lang-btn">EN</a>
         </div>
         
-        <div class="nav-links">
-            <a href="#features">GAMEPLAY</a>
-            <a href="#stats">NFT's</a>
-            <a href="#community">GAME COIN</a>
-            <a href="https://github.com/Esatsy/TacticsMaster" target="_blank">MARKETPLACE</a>
+        <div class="nav-center">
+            <a href="#gameplay" class="nav-link">GAMEPLAY</a>
+            <a href="#nfts" class="nav-link">NFT'S</a>
+            <a href="#coin" class="nav-link">GAME COIN</a>
+            <a href="#marketplace" class="nav-link">MARKETPLACE</a>
         </div>
         
-        <a href="#download" class="nav-btn">
-            SIGN IN
-        </a>
+        <div class="nav-right">
+            <a href="#signin" class="sign-in-btn">SIGN IN</a>
+        </div>
     </nav>
     
     <!-- Hero Section -->
@@ -955,7 +952,7 @@
             </div>
             <h1 class="hero-title">
                 YOUR OWN STORY<br>
-                <span>IN TACTICSMASTER</span>
+                IN FROZEVERSE
             </h1>
             <div class="hero-cta-row">
                 <a href="#download" class="hero-cta">
