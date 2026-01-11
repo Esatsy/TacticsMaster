@@ -154,8 +154,8 @@
             width: 100%;
             height: 100%;
             background: 
-                linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.3) 100%),
-                linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.9) 100%);
+                linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.2) 70%, transparent 100%),
+                linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.95) 100%);
             z-index: 1;
         }
         
@@ -282,22 +282,13 @@
         .hero-content {
             position: relative;
             z-index: 10;
-            padding: 0 48px;
-            max-width: 750px;
+            padding: 0 80px;
+            max-width: 700px;
+            margin-top: 60px;
         }
         
         .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
-            background: rgba(6, 182, 212, 0.1);
-            border: 1px solid rgba(6, 182, 212, 0.2);
-            border-radius: 100px;
-            font-size: 14px;
-            color: var(--primary-light);
-            margin-bottom: 28px;
-            animation: hero-fade 0.8s ease-out 2.3s both;
+            display: none;
         }
         
         @keyframes hero-fade {
@@ -307,10 +298,10 @@
         
         .hero-title {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(72px, 14vw, 160px);
-            line-height: 0.92;
-            letter-spacing: 3px;
-            margin-bottom: 28px;
+            font-size: clamp(64px, 12vw, 140px);
+            line-height: 0.95;
+            letter-spacing: 2px;
+            margin-bottom: 0;
             text-transform: uppercase;
             animation: hero-title 1s ease-out 2.5s both;
         }
@@ -329,11 +320,11 @@
         }
         
         .hero-subtitle {
-            font-size: 19px;
-            color: rgba(255, 255, 255, 0.65);
-            line-height: 1.75;
-            max-width: 450px;
-            margin-bottom: 44px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.65;
+            max-width: 280px;
+            margin: 0;
             animation: hero-sub 0.8s ease-out 2.8s both;
         }
         
@@ -342,24 +333,32 @@
             100% { transform: translateY(0); filter: blur(0); }
         }
         
+        .hero-cta-row {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-top: 36px;
+            animation: hero-cta 0.8s ease-out 3s both;
+        }
+        
         .hero-cta {
             display: inline-flex;
             align-items: center;
-            gap: 14px;
-            padding: 20px 42px;
-            background: var(--primary);
+            justify-content: center;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             border: none;
-            border-radius: 10px;
+            border-radius: 6px;
             color: #000;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 50px rgba(6, 182, 212, 0.5);
-            animation: hero-cta 0.8s ease-out 3s both;
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.4);
+            min-width: 200px;
         }
         
         @keyframes hero-cta {
@@ -837,9 +836,10 @@
             .nav { padding: 16px 24px; }
             .nav-links { display: none; }
             
-            .hero-content { padding: 0 24px; }
-            .hero-title { font-size: clamp(56px, 14vw, 100px); }
-            .hero-subtitle { max-width: 100%; font-size: 17px; }
+            .hero-content { padding: 0 24px; margin-top: 40px; }
+            .hero-title { font-size: clamp(48px, 12vw, 80px); }
+            .hero-subtitle { max-width: 100%; font-size: 14px; }
+            .hero-cta-row { flex-direction: column; align-items: flex-start; gap: 20px; }
             
             .download-buttons { display: none; }
             
@@ -905,20 +905,20 @@
                 <span>AI-Powered TFT Companion</span>
             </div>
             <h1 class="hero-title">
-                DOMINATE TFT<br>
-                <span>WITH AI POWER</span>
+                YOUR PATH TO<br>
+                <span>CHALLENGER</span>
             </h1>
-            <p class="hero-subtitle">
-                Get real-time composition recommendations, augment tier lists, 
-                and item optimization powered by machine learning trained on 
-                high-elo matches.
-            </p>
-            <a href="#download" class="hero-cta">
-                Try Now For Free
-                <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
-            </a>
+            <div class="hero-cta-row">
+                <a href="#download" class="hero-cta">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                    Try Now For Free
+                </a>
+                <p class="hero-subtitle">
+                    Get real-time composition recommendations, augment tier lists, and item optimization powered by machine learning.
+                </p>
+            </div>
         </div>
         
         <!-- Store Buttons with Iconify -->
