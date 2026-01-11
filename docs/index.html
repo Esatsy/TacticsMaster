@@ -110,26 +110,30 @@
             100% { clip-path: inset(0 0 100% 0); pointer-events: none; }
         }
         
-        /* ==================== PARALLAX BACKGROUND ==================== */
-        .parallax-bg {
+        /* ==================== VIDEO BACKGROUND ==================== */
+        .video-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
             z-index: 0;
-            will-change: transform;
+            overflow: hidden;
             mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
         }
         
-        .unicorn-container {
+        .video-bg video {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            filter: saturate(0.7) brightness(0.9);
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            filter: saturate(0.8) brightness(0.7);
         }
         
         /* ==================== HERO SECTION ==================== */
@@ -870,8 +874,11 @@
     </div>
     
     <!-- Parallax Background -->
-    <div class="parallax-bg" id="parallaxBg">
-        <div class="unicorn-container" data-us-project="vTTCp5g4cVl9nwjlT56Z"></div>
+    <!-- Video Background -->
+    <div class="video-bg" id="videoBg">
+        <video autoplay muted loop playsinline>
+            <source src="hero-bg.mp4" type="video/mp4">
+        </video>
     </div>
     
     <!-- Navigation -->
@@ -1101,19 +1108,6 @@
     
     <!-- Scripts -->
     <script>
-        // UnicornStudio Animation
-        !function(){
-            if(!window.UnicornStudio){
-                window.UnicornStudio={isInitialized:!1};
-                var i=document.createElement("script");
-                i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js";
-                i.onload=function(){
-                    window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)
-                };
-                (document.head || document.body).appendChild(i)
-            }
-        }();
-        
         // Generate Particles
         function createParticles() {
             const container = document.getElementById('particles');
@@ -1130,11 +1124,11 @@
         }
         createParticles();
         
-        // Parallax Scrolling
-        const parallaxBg = document.getElementById('parallaxBg');
+        // Parallax Scrolling for Video
+        const videoBg = document.getElementById('videoBg');
         window.addEventListener('scroll', () => {
             const scrolled = window.scrollY;
-            parallaxBg.style.transform = `translateY(${scrolled * 0.3}px)`;
+            if (videoBg) videoBg.style.transform = `translateY(${scrolled * 0.3}px)`;
         });
         
         // Navigation scroll effect
