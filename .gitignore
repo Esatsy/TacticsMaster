@@ -36,4 +36,12 @@ coverage/
 .cache/
 *.tsbuildinfo
 
+# Sensitive files - NEVER commit these!
+.riot_api_key
+*.key
+secrets/
+ai_engine.log
+*.db
+tft_matches.db
+
 
