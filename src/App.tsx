@@ -1,75 +1,99 @@
+/**
+ * TacticsMaster - Main Application
+ * 
+ * TFT Companion App for Teamfight Tactics
+ */
+
 import { useEffect, useState } from 'react'
-import { Dashboard } from './components/Dashboard'
+import { TFTDashboard } from './components/TFTDashboard'
 import { TitleBar } from './components/TitleBar'
 import { Navigation, Page } from './components/Navigation'
 import { HomePage } from './pages/HomePage'
-import { ChampionsPage } from './pages/ChampionsPage'
-import { TierListPage } from './pages/TierListPage'
-import { SynergiesPage } from './pages/SynergiesPage'
-import { SimulationPage } from './pages/SimulationPage'
-import { InGameOverlay } from './components/InGameOverlay'
-import { useDraftStore } from './stores/draftStore'
+import { useTFTStore } from './stores/tftStore'
+
+// Settings Page (inline for now)
+function SettingsPage() {
+  const { isDemoMode, enableDemoMode, disableDemoMode } = useTFTStore()
+  const [apiKey, setApiKey] = useState('')
+
+  return (
+    <div className="flex flex-col h-full w-full p-8 animate-fade-in overflow-y-auto">
+      <h1 className="text-3xl font-bold text-white mb-8">Settings</h1>
+      
+      <div className="space-y-6 max-w-2xl">
+        {/* Demo Mode */}
+        <div className="glass-panel p-6 rounded-xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Demo Mode</h3>
+              <p className="text-sm text-zinc-500 mt-1">
+                Preview the app with sample data without connecting to TFT
+              </p>
+            </div>
+            <button
+              onClick={() => isDemoMode ? disableDemoMode() : enableDemoMode()}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isDemoMode 
+                  ? 'bg-primary text-white' 
+                  : 'bg-zinc-800 text-zinc-400 hover:text-white'
+              }`}
+            >
+              {isDemoMode ? 'Enabled' : 'Enable'}
+            </button>
+          </div>
+        </div>
+        
+        {/* API Key */}
+        <div className="glass-panel p-6 rounded-xl">
+          <h3 className="text-lg font-semibold text-white mb-4">Riot API Key</h3>
+          <p className="text-sm text-zinc-500 mb-4">
+            Enter your Riot API key for additional features (optional)
+          </p>
+          <div className="flex gap-3">
+            <input
+              type="password"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              placeholder="RGAPI-..."
+              className="flex-1 bg-surface border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-primary/50"
+            />
+            <button
+              onClick={() => {
+                localStorage.setItem('riotApiKey', apiKey)
+                alert('Saved!')
+              }}
+              className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/80 transition-colors"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+        
+        {/* About */}
+        <div className="glass-panel p-6 rounded-xl">
+          <h3 className="text-lg font-semibold text-white mb-2">About TacticsMaster</h3>
+          <p className="text-sm text-zinc-500">
+            Your AI-powered TFT companion. Get composition recommendations, 
+            augment tier lists, and item optimization to climb the ranked ladder.
+          </p>
+          <div className="mt-4 pt-4 border-t border-white/5">
+            <p className="text-xs text-zinc-600">
+              TacticsMaster isn't endorsed by Riot Games and doesn't reflect the views 
+              or opinions of Riot Games or anyone officially involved in producing or 
+              managing Riot Games properties.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function App() {
-  const isOverlayWindow = window.location.hash === '#/overlay'
+  const { connectionStatus, isDemoMode } = useTFTStore()
+  const [currentPage, setCurrentPage] = useState<Page>('comps')
 
-  if (isOverlayWindow) {
-    document.documentElement.classList.add('overlay-window')
-    document.body.classList.add('overlay-window')
-    return <InGameOverlay />
-  }
-
-  const { setConnectionStatus, setChampSelectData, resetChampSelect, phase, connectionStatus } = useDraftStore()
-  const [currentPage, setCurrentPage] = useState<Page>('draft')
-
-  const isInChampSelect = connectionStatus === 'connected' && phase !== 'none'
-  
-  useEffect(() => {
-    if (isInChampSelect && currentPage !== 'draft') {
-      setCurrentPage('draft')
-    }
-  }, [isInChampSelect])
-
-  useEffect(() => {
-    const unsubscribeConnection = window.api.lcu.onConnectionChange((status) => {
-      setConnectionStatus(status as 'disconnected' | 'connecting' | 'connected')
-    })
-
-    const unsubscribeChampSelect = window.api.lcu.onChampSelectUpdate((data) => {
-      setChampSelectData(data as ChampSelectData)
-    })
-
-    const unsubscribeEnd = window.api.lcu.onChampSelectEnd(() => {
-      resetChampSelect()
-    })
-
-    window.api.lcu.getStatus().then((status) => {
-      setConnectionStatus(status as 'disconnected' | 'connecting' | 'connected')
-    })
-
-    return () => {
-      unsubscribeConnection()
-      unsubscribeChampSelect()
-      unsubscribeEnd()
-    }
-  }, [setConnectionStatus, setChampSelectData, resetChampSelect])
-
-  const isConnected = connectionStatus === 'connected'
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home': return <HomePage isConnected={isConnected} />
-      case 'draft': return <Dashboard />
-      case 'champions': return <ChampionsPage />
-      case 'tierlist': return <TierListPage />
-      case 'synergies': return <SynergiesPage />
-      case 'simulation': return <SimulationPage />
-      case 'settings': return <SettingsPage />
-      default: return <HomePage isConnected={isConnected} />
-    }
-  }
-
-  // Initialize UnicornStudio background
+  // Initialize UnicornStudio background animation
   useEffect(() => {
     if (!(window as any).UnicornStudio) {
       (window as any).UnicornStudio = { isInitialized: false }
@@ -85,9 +109,23 @@ function App() {
     }
   }, [])
 
+  const isConnected = connectionStatus === 'connected' || isDemoMode
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home': return <HomePage isConnected={isConnected} />
+      case 'comps': return <TFTDashboard />
+      case 'items': return <TFTDashboard />
+      case 'augments': return <TFTDashboard />
+      case 'stats': return <TFTDashboard />
+      case 'settings': return <SettingsPage />
+      default: return <TFTDashboard />
+    }
+  }
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      {/* UnicornStudio Animated Background */}
+      {/* Animated Background */}
       <div 
         className="fixed -z-10 w-full h-screen top-0 saturate-50 hue-rotate-180"
         style={{
@@ -103,118 +141,18 @@ function App() {
         </div>
       </div>
 
-      <TitleBar />
-      
-      <div className="flex flex-1 overflow-hidden relative">
-        {/* Sidebar Navigation */}
-        <Navigation 
-          currentPage={currentPage} 
-          onPageChange={setCurrentPage}
-          isInChampSelect={isInChampSelect}
-        />
-        
-        {/* Main Content */}
-        <main className="flex-1 flex flex-col relative overflow-hidden">
-          {/* Secondary Background Elements (subtle glows) */}
-          <div className="absolute inset-0 pointer-events-none z-0">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-primary/5 blur-[120px] rounded-full" />
-            <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-blue-600/5 blur-[100px] rounded-full" />
-            <div 
-              className="absolute inset-0 opacity-[0.03]" 
-              style={{ 
-                backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', 
-                backgroundSize: '40px 40px' 
-              }} 
-            />
-          </div>
-          
-          {/* Page Content */}
-          <div className="relative z-10 flex-1 overflow-hidden">
-            {renderPage()}
-          </div>
+      {/* Title Bar */}
+      <TitleBar title="TacticsMaster" />
+
+      {/* Main Content */}
+      <div className="flex-1 flex overflow-hidden">
+        <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
+        <main className="flex-1 overflow-hidden">
+          {renderPage()}
         </main>
       </div>
     </div>
   )
 }
-
-// Settings Page
-function SettingsPage() {
-  const { isDemoMode, enableDemoMode, disableDemoMode } = useDraftStore()
-  const [apiKey, setApiKey] = useState('')
-
-  return (
-    <div className="h-full overflow-y-auto p-8 animate-fade-in">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-display font-medium text-white mb-2">Settings</h1>
-        <p className="text-zinc-500 mb-8">Configure your DraftBetter experience.</p>
-
-        <div className="space-y-6">
-          {/* Demo Mode */}
-          <div className="glass-panel p-6 rounded-xl border border-white/5">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-white font-medium mb-1">Demo Mode</h3>
-                <p className="text-sm text-zinc-500">
-                  Test the UI without connecting to the League client.
-                </p>
-              </div>
-              <button
-                onClick={isDemoMode ? disableDemoMode : enableDemoMode}
-                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                  isDemoMode 
-                    ? 'bg-defeat/20 text-defeat border border-defeat/20 hover:bg-defeat/30' 
-                    : 'bg-primary/20 text-primary border border-primary/20 hover:bg-primary/30'
-                }`}
-              >
-                {isDemoMode ? 'Disable' : 'Enable'}
-              </button>
-            </div>
-          </div>
-
-          {/* API Key */}
-          <div className="glass-panel p-6 rounded-xl border border-white/5">
-            <h3 className="text-white font-medium mb-1">Riot API Key</h3>
-            <p className="text-sm text-zinc-500 mb-4">
-              Enter your personal API key for extended features.
-            </p>
-            <div className="flex gap-3">
-              <input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="RGAPI-..."
-                className="flex-1 bg-surface border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-primary/50"
-              />
-              <button
-                onClick={() => {
-                  localStorage.setItem('riotApiKey', apiKey)
-                  alert('Saved!')
-                }}
-                className="px-4 py-2 bg-primary text-white rounded-lg font-medium text-sm hover:bg-primary/80 transition-colors"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-
-          {/* About */}
-          <div className="glass-panel p-6 rounded-xl border border-primary/20">
-            <h3 className="text-primary font-medium mb-2">About DraftBetter</h3>
-            <div className="text-sm text-zinc-400 space-y-1">
-              <p>Version: 2.4.0</p>
-              <p>Patch: 14.23</p>
-              <p className="text-zinc-500 mt-3">
-                AI-powered draft assistant for League of Legends. Synergy analysis, counter picks, and real-time recommendations.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-import { ChampSelectData } from './types'
 
 export default App

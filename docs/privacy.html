@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - TacticsMaster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #06b6d4;
+            --bg: #0a0a0f;
+            --surface: #121214;
+            --border: rgba(255, 255, 255, 0.05);
+            --text: #e4e4e7;
+            --text-muted: #71717a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        header {
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .back-link:hover { text-decoration: underline; }
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .updated {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            color: var(--primary);
+        }
+        p, ul, li {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        ul { padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        strong { color: var(--text); }
+        .highlight {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Back to Home</a>
+            <h1>Privacy Policy</h1>
+            <p class="updated">Last updated: January 2024</p>
+        </header>
+        
+        <main>
+            <p>
+                This Privacy Policy describes how TacticsMaster ("we", "us", or "our") collects, uses, 
+                and protects your information when you use our desktop application.
+            </p>
+            
+            <h2>Information We Collect</h2>
+            
+            <h3>Data from Riot Games API</h3>
+            <p>When you use TacticsMaster, we access the following data through the official Riot Games API:</p>
+            <ul>
+                <li><strong>Summoner Information:</strong> Your summoner name, profile icon, and summoner level</li>
+                <li><strong>Ranked Data:</strong> Your current rank, LP, wins, and losses in TFT</li>
+                <li><strong>Match History:</strong> Your recent TFT matches, including compositions played, placement, and augments selected</li>
+            </ul>
+            
+            <div class="highlight">
+                <strong>Important:</strong> We only access data for the account currently logged into the TFT client. 
+                We do not access data from other players without their consent.
+            </div>
+            
+            <h2>How We Use Your Data</h2>
+            <ul>
+                <li>Display your personal statistics within the application</li>
+                <li>Provide personalized composition and augment recommendations</li>
+                <li>Train machine learning models using aggregated, anonymized match data</li>
+                <li>Improve our recommendation algorithms</li>
+            </ul>
+            
+            <h2>Data Storage</h2>
+            <ul>
+                <li><strong>Local Storage Only:</strong> Your personal data is stored locally on your device</li>
+                <li><strong>No Cloud Storage:</strong> We do not upload or store your personal data on external servers</li>
+                <li><strong>Aggregated Data:</strong> Match data used for ML training is anonymized and contains no personally identifiable information</li>
+            </ul>
+            
+            <h2>Data We Do NOT Collect</h2>
+            <ul>
+                <li>Your real name or email address</li>
+                <li>Payment or financial information</li>
+                <li>IP address or location data</li>
+                <li>Data from other players</li>
+                <li>Chat logs or private messages</li>
+            </ul>
+            
+            <h2>Third-Party Services</h2>
+            <p>
+                TacticsMaster uses the official Riot Games API to access game data. 
+                Your use of TacticsMaster is also subject to Riot Games' 
+                <a href="https://www.riotgames.com/en/privacy-notice" target="_blank" style="color: var(--primary);">Privacy Policy</a>.
+            </p>
+            
+            <h2>Data Retention</h2>
+            <p>
+                Personal data is stored locally on your device and persists until you uninstall the application 
+                or manually clear the app data. We do not retain any personal data on our servers.
+            </p>
+            
+            <h2>Your Rights</h2>
+            <p>You have the right to:</p>
+            <ul>
+                <li>Access your data by viewing it within the application</li>
+                <li>Delete your data by uninstalling the application</li>
+                <li>Opt out of data collection by not using the application</li>
+            </ul>
+            
+            <h2>Children's Privacy</h2>
+            <p>
+                TacticsMaster is not intended for children under 13 years of age. We do not knowingly 
+                collect personal information from children under 13.
+            </p>
+            
+            <h2>Changes to This Policy</h2>
+            <p>
+                We may update this Privacy Policy from time to time. We will notify you of any changes 
+                by posting the new Privacy Policy on this page and updating the "Last updated" date.
+            </p>
+            
+            <h2>Contact Us</h2>
+            <p>
+                If you have any questions about this Privacy Policy, please open an issue on our 
+                <a href="https://github.com" target="_blank" style="color: var(--primary);">GitHub repository</a>.
+            </p>
+        </main>
+    </div>
+</body>
+</html>
